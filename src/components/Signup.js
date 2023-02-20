@@ -2,9 +2,9 @@ import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 
-function Signup() {
+function Signup(props) {
   const [creds, setCreds] = useState({name: "", email: "", password:"", confirmPassword: ""});
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   // handling submit button and call login api
   const handleSubmit = async (e) => {
@@ -27,8 +27,9 @@ function Signup() {
       if (response.success) {
           localStorage.setItem('token', response.authtoken);
           navigate("/");
+          props.showAlert("Account Created Successfully.", "success");
       } else {
-          alert("Please enter valid credentials!");
+          props.showAlert("Invalid Credentials!", "danger");
       }
   }
 
@@ -39,6 +40,7 @@ function Signup() {
 
   return (
     <div>
+      <h2>Signup for use iNotebook</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Name</label>

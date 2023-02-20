@@ -3,14 +3,7 @@ import { useState } from "react";
 
 const NoteState = (props) => {
     const host = "http://localhost:5000";
-    const [notes, setNotes] = useState([
-        {
-            _id: "63ee1b7c450ac0eb6fc0e225",
-            user: "63edced7f81b514123497971",
-            title: "updated ",
-            description: "updated description"
-        }
-    ]);
+    const [notes, setNotes] = useState([]);
 
     // get note
     const getNotes = async () => {
@@ -20,7 +13,7 @@ const NoteState = (props) => {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNlZGNlZDdmODFiNTE0MTIzNDk3OTcxIn0sImlhdCI6MTY3NjUyOTM2N30.jppw33LPbRCiZEMSx8k_AHArnJw7EGFHtGtGsfOTlwQ',
+                    'auth-token': localStorage.getItem('token'),
                 },
             });
     

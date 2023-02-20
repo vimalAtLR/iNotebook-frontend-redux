@@ -2,13 +2,18 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import noteContext from "../context/notes/noteContex";
 import NoteItem from "./NoteItem";
 import AddNote from './AddNote'
+import { useNavigate } from 'react-router-dom';
 
-function Notes() {
+function Notes(props) {
   const { notes, getNotes, editNote } = useContext(noteContext);
   const initialState = { id: "", etitle: "", edescription: "", etag: ""}
   const [note, setNote] = useState(initialState);
+  let navigate = useNavigate();
 
   useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+    }
     getNotes();
     // eslint-disable-next-line
   }, [])
@@ -29,6 +34,7 @@ function Notes() {
     refClose?.current?.click();
     // calling NoteState function for call api and update note in database
     editNote(note.id, Array.isArray(note.etitle) ? note.etitle[0] : note.etitle, Array.isArray(note.edescription) ? note.edescription[0] : note.edescription, Array.isArray(note.etag) ? note.etag[0] : note.etag);
+    props.showAlert("Updated Successfully", "success");
   }
 
   // for change input value
@@ -38,7 +44,7 @@ function Notes() {
 
   return (
     <>
-        <AddNote />
+        <AddNote showAlert={props.showAlert} />
 
         <button type="button" ref={ref} className="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Launch demo modal
@@ -79,7 +85,7 @@ function Notes() {
             <h2>Your Notes</h2>
             {notes?.map((note) => {
                 return <div className="col-md-4" key={note._id}>
-                    <NoteItem note={note} updateNote={updateNote} />
+                    <NoteItem note={note} updateNote={updateNote} showAlert={props.showAlert} />
                 </div>
             })}
         </div>
